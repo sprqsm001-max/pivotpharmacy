@@ -20,6 +20,10 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # Try with .html extension
 RewriteRule ^([^\.]+)$ $1.html [NC,L]
 
+# Redirect explicit .html requests to extensionless URL (301 Permanent Redirect)
+RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
+RewriteRule ^ /%1 [NC,L,R=301]
+
 # === HTTPS REDIRECT (uncomment when SSL is active) ===
 # RewriteCond %{HTTPS} off
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
