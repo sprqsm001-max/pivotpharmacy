@@ -1,71 +1,36 @@
-# Pivot Pharmacy — Static Website
-**Converted from Google Sites to Static HTML/CSS/JS**
+# Pivot Pharmacy — Redesigned Website (Deploy-Ready Package)
 
-## Site Structure
-```
-pivot-pharmacy/
-├── index.html               ← Home page
-├── about.html               ← About Us
-├── medical-tourism.html     ← Medical Tourism
-├── international-study.html ← International Study
-├── contact.html             ← Contact Us
-├── .htaccess                ← cPanel/DirectAdmin server config
-└── assets/
-    ├── css/
-    │   └── style.css        ← All styles
-    ├── js/
-    │   └── main.js          ← Navigation, animations
-    └── images/
-        └── hero-bg.jpg      ← Hero background image
-```
+**Design concept:** "Clinical Trust" · Blue `#0C4A6E` + Green `#22A06B` · Sora + Inter
 
-## Deployment to cPanel / DirectAdmin
+## Pages
+| File | URL (live) | Purpose |
+|---|---|---|
+| `index.html` | `/` | Home — hero, trust band, services, medical-tourism band, team, partners, CTA |
+| `about.html` | `/about` | Story, mission/vision/values, stats, leadership |
+| `medical-tourism.html` | `/medical-tourism` | Procedure cards, destinations (CZ/IN/ID), HEDVEA partner spotlight, CZ line |
+| `international-study.html` | `/international-study` | Why Czech Republic, programmes BSc→PhD, 5-step application process |
+| `contact.html` | `/contact` | Tappable contact cards, honest form, hours, map panel |
+| `404.html` | `/404.html` | Custom not-found page (`noindex`) |
 
-### Method 1 — File Manager
-1. Log in to your cPanel or DirectAdmin control panel
-2. Open **File Manager**
-3. Navigate to `public_html/` (or a subdomain folder)
-4. Upload all files and folders from this `pivot-pharmacy/` directory
-5. Ensure `.htaccess` is uploaded (hidden files must be visible)
-6. Visit your domain — the site is live!
+## Deploy
+1. Upload **all files** (including `.htaccess`, `robots.txt`, `sitemap.xml`) to the web root of `pivotpharmacy.topservice.ng`.
+2. Ensure Apache `mod_rewrite` is enabled — it forces HTTPS (the audited site does not redirect HTTP→HTTPS today) and serves the extensionless URLs listed in `sitemap.xml`.
+3. Submit `sitemap.xml` in Google Search Console.
 
-### Method 2 — FTP (FileZilla / WinSCP)
-1. Connect via FTP to your hosting server
-2. Upload the contents of `pivot-pharmacy/` to `public_html/`
-3. Ensure `.htaccess` is included
+## Local preview
+Open `index.html` in a browser — all internal links use `.html` filenames so they work from file:// as well as on any web server.
 
-## Post-Deployment Steps
-- **Enable HTTPS**: Activate your SSL certificate in cPanel → SSL/TLS, then uncomment the HTTPS redirect lines in `.htaccess`
-- **Contact Form**: The form currently simulates sending. To receive emails, integrate one of these:
-  - **Formspree** (free): Replace `onsubmit="handleSubmit(event)"` with Formspree action URL
-  - **PHP Mailer**: Add a `mail.php` script (see note below)
-  - **cPanel forwarder**: Use Email Forwarders in cPanel
+## Audit fixes baked in
+- ✅ Contact form no longer fakes success (was `setTimeout` + fake ✅). Validates, then opens a prefilled email — marked clearly until a real backend (e.g. Formspree) is connected.
+- ✅ All phone/email/WhatsApp details tappable (`tel:`, `mailto:`, `wa.me:`).
+- ✅ One official email everywhere: `info@pivotpharm.com` (yahoo address removed).
+- ✅ "Pharmacist**s** Council of Nigeria" spelling fixed; "Plaza,108" comma typo fixed.
+- ✅ Footer © updated to 2026.
+- ✅ Unique title + meta description + canonical + Open Graph per page; favicon added; `robots.txt` + `sitemap.xml` included (all absent on the live site).
+- ✅ Descriptive alt text; `loading="lazy"` + dimensions on non-hero imagery; `defer` on scripts.
+- ✅ "Nigeria Office Building" (iPhone photo) and the Christmas group photo are **excluded**; hero imagery is the real pills photo + Prague facility.
 
-## Contact Form — PHP Integration (Optional)
-Create `mail.php` in root:
-```php
-<?php
-if ($_POST) {
-    $to = 'pivotpharmacy@yahoo.com';
-    $subject = 'Website Enquiry: ' . htmlspecialchars($_POST['subject']);
-    $body = "Name: {$_POST['name']}\nEmail: {$_POST['email']}\nPhone: {$_POST['phone']}\n\n{$_POST['message']}";
-    mail($to, $subject, $body, "From: {$_POST['email']}");
-    echo 'success';
-}
-```
-Then change the form's `onsubmit` to POST to `mail.php`.
-
-## Navigation Pages
-| File | URL |
-|------|-----|
-| index.html | / or /home |
-| about.html | /about |
-| medical-tourism.html | /medical-tourism |
-| international-study.html | /international-study |
-| contact.html | /contact |
-
-## Design Notes
-- **Brand color**: `#979292` (muted warm grey — matches original Google Sites theme)
-- **Fonts**: Roboto (headings) + Open Sans (body) — same as original
-- **Responsive**: Mobile-first, hamburger menu on small screens
-- **Animations**: Scroll-triggered fade-up on all sections
+## Still needed from the boss (decisions pending in the QA audit)
+1. Real form backend credentials/service.
+2. Partner logos for the "Our Partners" strip (currently text chips).
+3. Confirm office hours shown on the contact page.
