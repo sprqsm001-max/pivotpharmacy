@@ -4,6 +4,9 @@
 # ---------- Force HTTPS ----------
 <IfModule mod_rewrite.c>
 RewriteEngine On
+# Redirect explicit .html requests to clean extensionless URL (301)
+RewriteCond %{THE_REQUEST} \s/([^.]+)\.html[\s?] [NC]
+RewriteRule ^ /%1 [NC,L,R=301]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
